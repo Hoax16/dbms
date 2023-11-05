@@ -1,0 +1,82 @@
+Consider  two tables Customer(c_id, c_name , email , city , pincode)Order(order_id , date , amount , cust_id.
+1.	Create both the tables with primary key and foreign key constraints. 
+2.	insert 10 records each.
+3.	Find all orders placed by customers with cust_id 2
+4.	Find list of customers who placed their order and details of order
+5.	List of customers who haven’t placed order
+6.	List all orders and append to customer table
+7.	Display all records
+8.	Display customer that are from same city8
+
+1. Create the `Customer` and `Order` tables with primary key and foreign key constraints:
+
+CREATE TABLE Customer (
+    c_id INT PRIMARY KEY,
+    c_name VARCHAR(255),
+    email VARCHAR(255),
+    city VARCHAR(255),
+    pincode INT
+);
+
+CREATE TABLE `Order` (
+    order_id INT PRIMARY KEY,
+    date DATE,
+    amount DECIMAL(10, 2),
+    cust_id INT,
+    FOREIGN KEY (cust_id) REFERENCES Customer(c_id)
+);
+
+2. Insert 10 records into each table (Sample data):
+
+INSERT INTO Customer (c_id, c_name, email, city, pincode) VALUES
+    (1, 'Alice', 'alice@email.com', 'New York', 10001),
+    (2, 'Bob', 'bob@email.com', 'Los Angeles', 90001),
+    (3, 'Charlie', 'charlie@email.com', 'Chicago', 60001),
+    (4, 'David', 'david@email.com', 'Houston', 77001),
+    (5, 'Eve', 'eve@email.com', 'San Francisco', 94016),
+    (6, 'Frank', 'frank@email.com', 'Miami', 33125),
+    (7, 'Grace', 'grace@email.com', 'Boston', 2108),
+    (8, 'Hank', 'hank@email.com', 'Phoenix', 85001),
+    (9, 'Ivy', 'ivy@email.com', 'Seattle', 98101),
+    (10, 'Jack', 'jack@email.com', 'Dallas', 75201);
+
+INSERT INTO `Order` (order_id, date, amount, cust_id) VALUES
+    (101, '2023-01-15', 100.00, 2),
+    (102, '2023-02-20', 200.00, 5),
+    (103, '2023-03-25', 150.00, 1),
+    (104, '2023-04-10', 75.00, 6),
+    (105, '2023-05-05', 300.00, 3),
+    (106, '2023-06-12', 50.00, 7),
+    (107, '2023-07-18', 120.00, 9),
+    (108, '2023-08-22', 180.00, 4),
+    (109, '2023-09-30', 250.00, 10),
+    (110, '2023-10-05', 90.00, 8);
+3. 
+SELECT * FROM `Order` WHERE cust_id = 2;
+4. 
+SELECT c.*, o.order_id, o.date, o.amount
+FROM Customer c
+LEFT JOIN `Order` o ON c.c_id = o.cust_id;
+
+5. List customers who haven't placed an order:
+SELECT c.*
+FROM Customer c
+LEFT JOIN `Order` o ON c.c_id = o.cust_id
+WHERE o.cust_id IS NULL;
+6. List all orders and append them to the customer table:
+
+This operation is not a typical SQL operation, and it's generally better to keep data in separate tables and perform joins when needed. If you have specific requirements for denormalization, you can create a new table, but it's not recommended without a clear use case.
+
+7. Display all records in the Customer and Order tables:
+-- Display all records in the Customer table
+SELECT * FROM Customer;
+
+-- Display all records in the Order table
+SELECT * FROM `Order`;
+8. Display customers that are from the same city:
+
+SELECT c1.c_name AS customer1, c2.c_name AS customer2, c1.city
+FROM Customer c1
+JOIN Customer c2 ON c1.city = c2.city AND c1.c_id <> c2.c_id;
+
+

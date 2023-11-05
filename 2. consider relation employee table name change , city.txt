@@ -1,0 +1,56 @@
+
+Create the "employee" table:
+
+CREATE TABLE employee (
+    emp_id INT PRIMARY KEY,
+    e_name VARCHAR(255),
+    salary DECIMAL(10, 2),
+    Date_of_Joining DATE,
+    Dept_no INT,
+    Designation VARCHAR(255),
+    Location VARCHAR(255)
+);
+
+INSERT INTO employee (emp_id, e_name, salary, date_of_joining, dept_no, designation, location)
+VALUES 
+(1, 'Joe', 50000.00, '2022-01-10', 101, 'Relationship Advisor', 'Bhopal'),
+(2, 'Jason', 45000.00, '2022-02-15', 102, 'Engineer', 'Agra'),
+(3, 'Adu', 65000.00, '2022-04-05', 103, 'Sales Manager', 'Delhi'),
+(4, 'Aniket', 150000.00, '2022-01-10', 104, 'Engineer', 'Kolkata'),
+(5, 'Tushar', 250000.00, '2022-01-10', 105, 'HR', 'Bangalore'),
+(6, 'Shantanu', 140000.00, '2022-01-10', 104, 'Senior Executive', 'Pune'),
+(7, 'Sarthak', 120000.00, '2022-01-10', 107, 'Project Planner', 'Mumbai'),
+(8, 'Atharva', 90000.00, '2022-01-10', 108, 'Manager', 'Jaipur'),
+(9, 'Ajinkya', 100000.00, '2022-01-10', 109, 'CA', 'Hyderabad'),
+(10, 'Shivam', 140000.00, '2022-01-10', 110, 'Fund Raiser', 'Patna');
+
+1. Display employees whose name contains the letter 'e':
+SELECT * FROM employee
+WHERE e_name LIKE '%e%';
+
+2. Display different types of designations:
+SELECT DISTINCT Designation FROM employee;
+
+3. Display the name and salary of employees whose location is Mumbai:
+SELECT e_name, salary FROM employee
+WHERE location = 'Mumbai';
+
+4. Display the name and department of employees working in the Manager or Marketing department:
+SELECT e_name, Dept_no FROM employee
+WHERE Dept_no IN ('Manager', 'Marketing');
+
+5. Display the department names with more than one employee:
+SELECT Dept_no, COUNT(emp_id) AS EmployeeCount
+FROM employee
+GROUP BY Dept_no
+HAVING COUNT(emp_id) > 1;
+
+6. Rename the "employee" table as "emp1":
+ALTER TABLE employee
+RENAME TO emp1;
+
+7. Add a new column "city" in the "employee" table:
+ALTER TABLE emp1
+ADD city VARCHAR(50);
+
+

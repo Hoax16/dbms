@@ -1,0 +1,50 @@
+Implement a PL/SQL block of code using explicit Cursor, that will merge the data available in the newly created table N_RollCall with the data available in the table O_RollCall. If the data in the first table already exist in the second table then that data should be skipped
+
+
+
+-- Create the tables N_RollCall and O_RollCall
+CREATE TABLE N_RollCall (
+    ID NUMBER PRIMARY KEY,
+    Name VARCHAR2(255),
+    -- Add other columns as needed
+);
+
+CREATE TABLE O_RollCall (
+    ID NUMBER PRIMARY KEY,
+    Name VARCHAR2(255),
+    -- Add other columns as needed
+);
+
+-- Sample data for N_RollCall
+INSERT INTO N_RollCall (ID, Name) VALUES (1, 'John');
+INSERT INTO N_RollCall (ID, Name) VALUES (2, 'Alice');
+INSERT INTO N_RollCall (ID, Name) VALUES (3, 'Bob');
+INSERT INTO N_RollCall (ID, Name) VALUES (4, 'Eve');
+
+-- PL/SQL block to merge data from N_RollCall into O_RollCall
+DECLARE
+    CURSOR n_rollcall_cursor IS
+        SELECT * FROM N_RollCall;
+
+    n_rollcall_row N_RollCall%ROWTYPE;
+    record_exists BOOLEAN;
+
+BEGIN
+    FOR n_rollcall_row IN n_rollcall_cursor LOOP
+        record_exists := FALSE;
+        
+        FOR o_rollcall_row IN (SELECT * FROM O_RollCall WHERE ID = n_rollcall_row.ID) LOOP
+            record_exists := TRUE;
+        END LOOP;
+        
+        IF NOT record_exists THEN
+            INSERT INTO O_RollCall (ID, Name)
+            VALUES (n_rollcall_row.ID, n_rollcall_row.Name);
+        END IF;
+    END LOOP;
+
+    COMMIT;
+    
+    DBMS_OUTPUT.PUT_LINE('Data merged successfully.');
+END;
+/

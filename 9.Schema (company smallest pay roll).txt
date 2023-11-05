@@ -1,0 +1,61 @@
+For the given relation schema: employee(employee-name, street, city) 
+works (employee-name, company-name, salary) 
+company (company-name, city) 
+manages (employee-name, manager-name)
+ Give an expression in SQL for each of the following queries: 
+a)	Find the name of the company that has the smallest payroll.
+b)	Find the names of all employees in the database who live in the same cities and on the same streets as do their managers.
+
+
+-- Create the employee table
+CREATE TABLE employee (
+    employee_name VARCHAR(255) PRIMARY KEY,
+    street VARCHAR(255),
+    city VARCHAR(255)
+);
+
+-- Create the works table
+CREATE TABLE works (
+    employee_name VARCHAR(255) PRIMARY KEY,
+    company_name VARCHAR(255),
+    salary DECIMAL(10, 2),
+    FOREIGN KEY (employee_name) REFERENCES employee(employee_name)
+);
+
+-- Create the company table
+CREATE TABLE company (
+    company_name VARCHAR(255) PRIMARY KEY,
+    city VARCHAR(255)
+);
+
+-- Create the manages table
+CREATE TABLE manages (
+    employee_name VARCHAR(255),
+    manager_name VARCHAR(255),
+    FOREIGN KEY (employee_name) REFERENCES employee(employee_name)
+);
+
+-- Insert sample data into the tables
+INSERT INTO employee (employee_name, street, city) VALUES
+    ('Rahul Kumar', '123 Main St', 'Delhi'),
+    ('Amit Sharma', '456 Elm St', 'Mumbai'),
+    ('Vijay Verma', '789 Oak St', 'Delhi'),
+    ('Rajesh Patel', '101 Pine St', 'Bangalore'),
+    ('Sanjay Singh', '202 Maple St', 'Mumbai');
+
+INSERT INTO works (employee_name, company_name, salary) VALUES
+    ('Rahul Kumar', 'Company A', 12000.00),
+    ('Amit Sharma', 'Company B', 11000.00),
+    ('Vijay Verma', 'Company A', 12500.00),
+    ('Rajesh Patel', 'Company C', 10500.00),
+    ('Sanjay Singh', 'Company B', 11500.00);
+
+INSERT INTO company (company_name, city) VALUES
+    ('Company A', 'Delhi'),
+    ('Company B', 'Mumbai'),
+    ('Company C', 'Bangalore');
+
+INSERT INTO manages (employee_name, manager_name) VALUES
+    ('Rahul Kumar', 'Vijay Verma'),
+    ('Amit Sharma', 'Rahul Kumar'),
+    ('Rajesh Patel', 'Vijay Verma');
